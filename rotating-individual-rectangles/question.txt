@@ -1,0 +1,30 @@
+Hi everyone,
+
+I try to create a grid of rectangles which are rotated by 45°.
+
+So something like this:
+17Bildschirmfoto 2019-03-07 um 01.14.17.png1444×1488 223 KB
+But with a rotation of 45° of every rectangle.
+Whatever I try with “translate” I can’t get them to align back in a grid.
+What am I doing wrong?
+
+void setup() {
+  size(610, 610);
+  pixelDensity(displayDensity());
+  noFill();
+  stroke(255, 255, 255);
+  background(0);
+  noLoop();
+  rectMode(CENTER);
+}
+
+void draw() {
+  for(int i = 20; i < width; i += 30) {
+    for (int j = 20; j < height; j += 30) {
+      translate(0,0);
+      rotate(radians(45));
+      rect(i, j, 20, 20);
+      resetMatrix();
+    }
+  }
+}

@@ -1,0 +1,60 @@
+Hey there! This is my first post so hopefully it’s worth something. Each transformation function, like rotate(), translate() and scale(), all relate to the origin of your canvas, which is by default in the top left corner (0, 0). By using a rotate function, you are rotating everything relative to wherever your canvas origin is, which again, by default is (0,0) or the top left corner of your screen. This is why the farther your rectangles are from the top left corner of your screen, the more they are “displaced” from their expected x,y position.
+
+How do we get around this? We ensure every single rectangle function called inside your for loop is centered around the origin: rect(0,0,20,20);
+
+But, in order to ensure multiple rectangles are visible across your canvas, versus being drawn on top of the last, we’ll use your increasing values (int i and int j of your for loop) to update the origin of each individual rectangle.
+
+ for(int i = 20; i < width; i += 30) {
+    for (int j = 20; j < height; j += 30) {
+      translate(i,j);
+      rotate(radians(45));
+      rect(0, 0, 20, 20);
+      resetMatrix();
+    }
+Now, without your resetMatrix(); function call at the end, all of your transformations would continue to compound on the last, making it impossible to isolate and control the rotation of each individual rectangle.
+
+I remade your project using p5.js, so there are some slight syntax differences. But the approach and result is nearly identical to what you were attempting:
+
+            function setup() {
+                createCanvas(500,500);
+                rectMode(CENTER);
+                noFill();
+                stroke(255);
+                angleMode(DEGREES);
+            }
+
+            let many = 400;
+
+            function draw() {
+                background(100);                
+                for (i = 10; i < many; i+=15 ){
+                    for (j = 10; j < many; j+=15){
+                        translate(i,j);
+                        rotate(45);
+                        rect(0, 0, 10,10);
+                        resetMatrix();                   
+                    }
+                }
+            }
+
+This is extra info that may or may not be helpful, but I thought I’d tack it on anyway. There’s the notion of a ‘matrix stack’ that is important to understand when working with transformation functions. And it’s essential if you’re working with the OpenGL (?) 3D renderer in Processing (or WebGL in p5.js).
+
+When you’re calling a transformation function, you’re not just affecting the shapes you call after it, but you’re affecting the entire ‘matrix’ of your canvas. By calling resetMatrix(), I like to think you’re placing a fresh, brand new (transparent) canvas (or matrix) on top of your current one. Your new ‘matrix’, placed on top of the matrix stack of your project, will no longer be affected by any of the previous transformation functions you used. If you ever decide to dabble with 3D primitives, which I suggest you do, this is really important to understand. The only way to ‘move’ or position 3D primitive shapes through space, is by transforming the individual matrix that the 3D shape exists on.
+
+eg.
+
+ `
+//shape1
+transform(x,y,z);
+box(50,100); //parameters only describe size of cube
+resetMatrix();
+//shape2
+transform(x,y,z);
+cone(20,50);
+resetMatrix();
+//shape3 etc...
+
+'
+Hope this helps!
+
+PS: If anyone finds my matrix stack analogy confusing, incorrect or just plain silly, please let me know (:

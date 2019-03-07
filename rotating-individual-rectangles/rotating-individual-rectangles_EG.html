@@ -1,0 +1,45 @@
+<html>
+    <head>
+        <script src="https://cdnjs.cloudflare.com/ajax/libs/p5.js/0.7.3/p5.js"></script>
+        
+
+
+        <script>
+            new p5();
+
+            function setup() {
+                createCanvas(500,500);
+                
+                rectMode(CENTER);
+                noFill();
+                stroke(255);
+            }
+
+            let particle = function(x,y,w,h) {
+                translate(x,y);
+                rotate(mouseY/20);
+                rect(0,0,w,h);
+                resetMatrix();
+            }
+
+            let many = 400;
+            function draw() {
+                background(100);
+                
+                for (i = 10; i < many; i+=15 ){
+                    for (j = 10; j < many; j+=15){
+                        // translate(200,200)
+                        // rotate(45);
+                        particle(i, j, 10,10); 
+                        // resetMatrix();                   
+                    }
+                }
+                // particle(50,50);
+                
+            }
+
+        </script>
+
+
+    </head>
+</html>
